@@ -10,8 +10,16 @@ class StudentController extends Controller
     //首页
     public function index(){
 
-        $students=Student::all();
-        return view('student/index',compact("students"));
+        $student=Student::find(1);
+        //一对多的文章
+        dd($student->adress);
+        //一对一的电话
+        dd($student->adress->tel);
+
+//普通获取所有数据
+//        $students=Student::all();
+
+//        return view('student/index',compact("students"));
 
     }
     //添加

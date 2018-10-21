@@ -38,16 +38,16 @@
             <tr>
                 <td>{{$article->id}}</td>
                 <td>{{$article->title}}</td>
-                <td>{{$article->author}}</td>
+                <td>{{$article->students->name}}</td>
                 <td>
                     <a href="/article/edit/{{$article->id}}" class="btn btn-success">编辑</a>
                     <a href="/article/del/{{$article->id}}" class="btn btn-danger">删除</a>
                 </td>
             </tr>
         @endforeach
-        
-    </table>
 
+    </table>
+    {{--{{$articles->links()}}--}}
 @endsection
 
 
