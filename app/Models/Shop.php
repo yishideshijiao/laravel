@@ -32,7 +32,7 @@ class Shop extends Model
 {
     //
     protected $fillable=[
-        'name','lei_id','price','details','shelf','num','updated_at',
+        'name','lei_id','price','details','shelf','num','updated_at','img'
     ];
 
     //关联类别

@@ -10,31 +10,39 @@ class ShopController extends Controller
     //
     public function index()
     {
-        $shops=Shop::all();
+        $shops = Shop::paginate(3);
 //        dd($shops);exit;
-        return view('shop/index',compact("shops"));
+        return view('shop/index', compact("shops"));
     }
 
     public function add(Request $request)
     {
-        if($request->isMethod('post')){
-//            dd($_POST);
-            //验证，如果没有通过，自动回到上页
-            $this->validate($request,[
-                "name"=>"required|max:15|min:3",
-                "price"=>"required",
-//                "datails"=>"required",
-                "shelf"=>"required"
+        if ($request->isMethod('post')) {
+            //验证
+            $this->validate($request, [
+                "name" => "required|unique:users",
+//                "password" => "required|min:3|confirmed",
+                "img" => "required",
+                "captcha" => "required|captcha"
+            ], [
+                "captcha.required" => '验证码不能为空',
+                "captcha.captcha" => '验证码有误',
             ]);
 
+            $data = $request->post();
+            // 图片接收
+            $file = $request->file('img');
+//            dd($file->store("images","image"));
+            $data['img'] = $file->store("images", "image");
 
-            $data=$request->post();
 
-            if(Shop::create($data)){
-                session()->flash("success","添加成功");
+//            dd($data);
+
+            if (Shop::create($data)) {
+                session()->flash("success", "添加成功");
                 return redirect('shop/index');
             }
-        }else{
+        } else {
 
             return view('shop/add');
         }
@@ -43,25 +51,36 @@ class ShopController extends Controller
 
     public function del($id)
     {
-        $shop=Shop::find($id);
-        if($shop->delete()){
+        $shop = Shop::find($id);
+        if ($shop->delete()) {
             return redirect('shop/index');
         }
     }
 
-    public function edit(Request $request,$id)
+    public function edit(Request $request, $id)
     {
-        $shop=Shop::find($id);
+        $shop = Shop::find($id);
 
-        if($request->isMethod('post')){
-            $data=$request->post();
-            if($shop->update($data)){
+        if ($request->isMethod('post')) {
+            //验证
+            $this->validate($request, [
+                "name" => "required|unique:users",
+                "img" => "required",
+            ]);
+
+            $data = $request->post();
+            // 图片接收
+            $file = $request->file('img');
+//            dd($file->store("images","image"));
+            $data['img'] = $file->store("images", "image");
+
+            if ($shop->update($data)) {
                 return redirect()->route("shop.index");
-            }else{
+            } else {
                 return redirect()->back();
             }
-        }else{
-           return view('shop/edit',compact("shop"));
+        } else {
+            return view('shop/edit', compact("shop"));
         }
     }
 }

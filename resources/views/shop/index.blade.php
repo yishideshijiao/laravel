@@ -29,9 +29,10 @@
 
             <th>id</th>
             <th>商品名称</th>
-            <th>商品分类ID</th>
+            <th>商品分类</th>
+            <th>商品图片</th>
             <th>价格</th>
-            <th>商品详情</th>
+
             <th>是否上架</th>
             <th>商品浏览次数</th>
             <th>创建时间</th>
@@ -43,8 +44,11 @@
                 <td>{{$shop->id}}</td>
                 <td>{{$shop->name}}</td>
                 <td>{{$shop->lei->name}}</td>
+                <td>
+                    <img src="/{{$shop->img}}" alt="" height="80">
+                </td>
                 <td>{{$shop->price}}</td>
-                <td>{{$shop->details}}</td>
+
                 <td>{{$shop->shelf==1?'是':'否'}}</td>
                 <td>{{$shop->num}}</td>
                 <td>{{$shop->created_at}}</td>
@@ -56,7 +60,9 @@
                 </td>
             </tr>
         @endforeach
+
     </table>
+    {{$shops->links()}}
 @endsection
 
 
